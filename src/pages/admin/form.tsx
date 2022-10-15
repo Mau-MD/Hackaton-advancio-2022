@@ -38,6 +38,7 @@ const FormView = (props: Partial<DropzoneProps>) => {
                 placeholder="Pick time"
                 icon={<IconClock size={16} />}
                 defaultValue={new Date()}
+                withAsterisk
                 />
             </Group>
         {/* Subir imagen */}
