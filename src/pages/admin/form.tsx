@@ -7,15 +7,34 @@ import React, { useState } from 'react';
 
 const FormView = (props: Partial<DropzoneProps>) => {
     const theme = useMantineTheme();
+    const now = new Date();
     
+    interface FormTypes {
+        name: string;
+        description: string;
+        place: string;
+        date: Date;
+        time: TimeRanges;
+    }
+
     const form = useForm({
         initialValues: {
-            email: '',
-            termsOfService: false,
+            name: '',
+            description: '',
+            place: '',
+            date: now,
+            time: null
         },
     
         validate: {
-            email: (value) => (/^\S+@\S+$/.test(value) ? null : 'Invalid email'),
+            name: (value) =>
+            value.length > 0 ? null : "El nombre es requerido",
+            description: (value) =>
+            value.length > 0 ? null : "La descripción es requerida",
+            place: (value) =>
+            value.length > 0 ? null : "la ubicación es requerida",
+            time: (value) =>
+            value == null ? null : "La hora es requerida",
         },
     });
     return (
@@ -29,28 +48,32 @@ const FormView = (props: Partial<DropzoneProps>) => {
             placeholder="e.g. CETYS Expoingeniería"
             label="Nombre del evento"
             withAsterisk
+            {...form.getInputProps("name")}
             />
         {/* Ubicación */}
             <Textarea
             placeholder="Describe actividades, ponentes, expositores, concursos, etc."
             label="Descripción"
             withAsterisk
+            {...form.getInputProps("description")}
             />
         {/* Lugar */}
             <TextInput
             placeholder="e.g. CETYS Universidad Campus Ensenada"
             label="Lugar"
             withAsterisk
+            {...form.getInputProps("place")}
             />
         {/* Date and time */}
             <Group>
-                <DatePicker placeholder="Selecciona tu fecha" label="Fecha" withAsterisk />
+                <DatePicker placeholder="Selecciona tu fecha" label="Fecha" withAsterisk {...form.getInputProps("date")} />
                 <TimeInput
                 label="Pick time"
                 placeholder="Pick time"
                 icon={<IconClock size={16} />}
                 defaultValue={new Date()}
                 withAsterisk
+                {...form.getInputProps("time")}
                 />
             </Group>
         {/* Subir imagen */}
