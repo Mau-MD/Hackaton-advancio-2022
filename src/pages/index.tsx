@@ -1,12 +1,11 @@
 import type { NextPage } from "next";
-import { Button, Card } from "@mantine/core"
+import { Button, Card } from "@mantine/core";
+import DetailsRoot from "../components/details/DetailsRoot";
 
 const Home: NextPage = () => {
-
   return (
     <div>
-      adios
-      <Button>Hola</Button>
+      <DetailsRoot />
     </div>
   );
 };
