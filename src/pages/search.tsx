@@ -1,10 +1,9 @@
-import { NextPage } from 'next'
-import React from 'react'
+import { NextPage } from "next";
+import React from "react";
+import SearchRoot from "../components/search/SearchRoot";
 
-const Search : NextPage = () => {
-  return (
-    <div>search</div>
-  )
-}
+const Search: NextPage = () => {
+  return <SearchRoot />;
+};
 
-export default Search
+export default Search;
