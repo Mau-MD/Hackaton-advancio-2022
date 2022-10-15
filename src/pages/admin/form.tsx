@@ -1,4 +1,5 @@
 import { Textarea, TextInput } from '@mantine/core';
+import { DatePicker } from '@mantine/dates';
 import React, { useState } from 'react';
 
 const FormView = () => {
@@ -17,7 +18,7 @@ const FormView = () => {
             withAsterisk
             />
         {/* Date and time */}
-        
+            <DatePicker placeholder="Selecciona tu fecha" label="Fecha" withAsterisk />;
         </>
     )
     
