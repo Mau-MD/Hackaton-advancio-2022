@@ -1,12 +1,25 @@
-import { Card, Image, Text, Badge, Button, Group } from "@mantine/core";
+import {
+  Card,
+  Image,
+  Text,
+  Badge,
+  Button,
+  Group,
+  Title,
+  Stack,
+} from "@mantine/core";
+import { format } from "date-fns";
+import { es } from "date-fns/locale";
+import _ from "lodash";
 
 interface Props {
   id: string;
   title: string;
   image: string;
+  date: Date;
 }
 
-function SecondaryEvent({ id, title, image }: Props) {
+function SecondaryEvent({ id, title, image, date }: Props) {
   return (
     <Card shadow="sm" p="md" radius="md" withBorder>
       <Card.Section>
@@ -19,11 +32,12 @@ function SecondaryEvent({ id, title, image }: Props) {
           alt="Norway"
         />
       </Card.Section>
-      <Group>
-        <Text weight={500}>
-          <h4>{title}</h4>
+      <div style={{ marginTop: "1rem" }}>
+        <Title order={4}>{title}</Title>
+        <Text color="dimmed">
+          {_.capitalize(format(date, "PPPP", { locale: es }))}
         </Text>
-      </Group>
+      </div>
     </Card>
   );
 }
