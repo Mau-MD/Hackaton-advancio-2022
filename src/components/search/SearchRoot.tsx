@@ -15,18 +15,20 @@ import { useDebouncedState, useDebouncedValue } from "@mantine/hooks";
 
 const SearchRoot = () => {
   const [query, setQuery] = useState("");
-  const [queryCities, setQueryCities] = useState([]);
-  const [querySchools, setQuerySchools] = useState([]);
-  const [queryRangeDate, setQueryRangeDate] = useState([]);
+  const [queryCities, setQueryCities] = useState<string[]>([]);
+  const [querySchools, setQuerySchools] = useState<string[]>([]);
+  const [queryRangeDate, setQueryRangeDate] = useState<Date[]>([]);
 
   const [debouncedQuery] = useDebouncedValue(query, 300);
   const [debouncedCities] = useDebouncedValue(queryCities, 300);
   const [debouncedSchools] = useDebouncedValue(querySchools, 300);
+  const [debouncedRangeDate] = useDebouncedValue(queryRangeDate, 300);
 
   const { data: events, isLoading } = trpc.events.getEvents.useQuery({
     query: debouncedQuery,
     cities: debouncedCities,
     schools: debouncedSchools,
+    date: debouncedRangeDate,
   });
 
   const { data: schools, isLoading: isLoadingSchool } =
@@ -57,7 +59,12 @@ const SearchRoot = () => {
               value={queryCities}
               onChange={(cities) => setQueryCities(cities)}
             />
-            <DateRangePicker label="Fechas" />
+            <DateRangePicker
+              label="Fechas"
+              onChange={(date) =>
+                date[0] && date[1] && setQueryRangeDate([date[0], date[1]])
+              }
+            />
           </>
         )}
       </Group>
@@ -77,6 +84,7 @@ const SearchRoot = () => {
             key={event.id}
             id={event.id}
             title={event.title}
+            date={event.date}
             badges={["Advancio", "CETYS Universidad"]}
             description={event.description}
           />
