@@ -78,11 +78,11 @@ const FormView = (props: Partial<DropzoneProps>) => {
                     </div>
                 </Group>
             </Dropzone>
-            <Affix position={{ bottom: 20, right: 20 }}>
-                <Button uppercase>
-                Create event
+            <Group position='center'>
+                <Button style={{ width: 150, height: 40 }}>
+                    Create event
                 </Button>
-            </Affix>
+            </Group>
         </Stack>
     )
 }
