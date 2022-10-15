@@ -7,19 +7,66 @@ import {
   TextInput,
   Title,
 } from "@mantine/core";
-import React from "react";
+import React, { useState } from "react";
 import { DateRangePicker, DateRangePickerValue } from "@mantine/dates";
 import EventSearchCard from "./EventSearchCard";
+import { trpc } from "../../utils/trpc";
+import { useDebouncedState, useDebouncedValue } from "@mantine/hooks";
 
 const SearchRoot = () => {
+  const [query, setQuery] = useState("");
+  const [queryCities, setQueryCities] = useState<string[]>([]);
+  const [querySchools, setQuerySchools] = useState<string[]>([]);
+  const [queryRangeDate, setQueryRangeDate] = useState<Date[]>([]);
+
+  const [debouncedQuery] = useDebouncedValue(query, 300);
+  const [debouncedCities] = useDebouncedValue(queryCities, 300);
+  const [debouncedSchools] = useDebouncedValue(querySchools, 300);
+  const [debouncedRangeDate] = useDebouncedValue(queryRangeDate, 300);
+
+  const { data: events, isLoading } = trpc.events.getEvents.useQuery({
+    query: debouncedQuery,
+    cities: debouncedCities,
+    schools: debouncedSchools,
+    date: debouncedRangeDate,
+  });
+
+  const { data: schools, isLoading: isLoadingSchool } =
+    trpc.school.getSchoolsForSelect.useQuery();
+  const { data: cities, isLoading: isLoadingCity } =
+    trpc.city.getCitiesForSelect.useQuery();
+
   return (
     <Stack>
       <Title order={5}>Busqueda de Eventos</Title>
-      <TextInput label="Nombre del evento" />
+      <TextInput
+        label="Nombre del evento"
+        onChange={(e) => setQuery(e.currentTarget.value)}
+        value={query}
+      />
       <Group grow>
-        <MultiSelect label="Ciudad" data={[]} />
-        <MultiSelect label="Escuela" data={[]} />
-        <DateRangePicker label="Fechas" />
+        {schools && cities && (
+          <>
+            <MultiSelect
+              label="Escuela"
+              data={schools}
+              value={querySchools}
+              onChange={(schools) => setQuerySchools(schools)}
+            />
+            <MultiSelect
+              label="Ciudad"
+              data={cities}
+              value={queryCities}
+              onChange={(cities) => setQueryCities(cities)}
+            />
+            <DateRangePicker
+              label="Fechas"
+              onChange={(date) =>
+                date[0] && date[1] && setQueryRangeDate([date[0], date[1]])
+              }
+            />
+          </>
+        )}
       </Group>
       <Title order={5} mt={15}>
         Resultados
@@ -32,24 +79,16 @@ const SearchRoot = () => {
           { maxWidth: 600, cols: 1, spacing: "sm" },
         ]}
       >
-        <EventSearchCard
-          id={""}
-          title={"Hack Ensenada"}
-          badges={["Advancio", "CETYS Universidad"]}
-          description="Unete a este hackaton"
-        />
-        <EventSearchCard
-          id={""}
-          title={"Evento deportivo"}
-          badges={["UABC", "Deporte", "Ensenada", "Tijuana"]}
-          description="Participa en este deporte de quemados"
-        />
-        <EventSearchCard
-          id={""}
-          title={"Hack Ensenada"}
-          badges={["Advancio"]}
-          description="Unete a este hackaton"
-        />
+        {events?.map((event) => (
+          <EventSearchCard
+            key={event.id}
+            id={event.id}
+            title={event.title}
+            date={event.date}
+            badges={["Advancio", "CETYS Universidad"]}
+            description={event.description}
+          />
+        ))}
       </SimpleGrid>
     </Stack>
   );
