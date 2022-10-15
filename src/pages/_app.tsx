@@ -7,6 +7,8 @@ import { MantineProvider } from "@mantine/styles";
 import { AppShell, Container, Text } from "@mantine/core";
 import { useState } from "react";
 import { HeaderSearchProps, Navbar } from "../components/core/Navbar";
+import { useRouter } from "next/router";
+import Sidebar from "../components/core/Sidebar";
 
 interface NavLink {
   link: string;
@@ -22,10 +24,16 @@ const MyApp: AppType<{ session: Session | null }> = ({
 }) => {
   const [opened, setOpened] = useState(false);
 
+  const router = useRouter();
+
   return (
     <MantineProvider withCSSVariables withNormalizeCSS>
       <SessionProvider session={session}>
-        <AppShell padding={"md"} header={<Navbar links={links} />}>
+        <AppShell
+          padding={"md"}
+          header={<Navbar links={links} />}
+          navbar={router.pathname.startsWith("/admin") ? <Sidebar /> : <></>}
+        >
           <Container>
             <Component {...pageProps} />
           </Container>
