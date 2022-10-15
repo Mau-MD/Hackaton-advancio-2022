@@ -108,7 +108,13 @@ export const Navbar = ({ links }: HeaderSearchProps) => {
     <Header height={56} mb={120}>
       <Container>
         <div className={classes.inner}>
-          <Title order={3}>Ensenada Events</Title>
+          <Title
+            order={4}
+            onClick={() => router.push("/")}
+            style={{ cursor: "pointer" }}
+          >
+            paDondeFuga
+          </Title>
           <Group spacing={5} className={classes.links}>
             {items}
           </Group>
