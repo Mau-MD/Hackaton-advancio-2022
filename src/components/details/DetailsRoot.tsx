@@ -35,7 +35,7 @@ const DetailsRoot = ({ id }: Props) => {
         </Text>
         <Text align={"justify"}>{event.description}</Text>
       </Stack>
-      <RegistrationForm />
+      <RegistrationForm id={id} />
     </Stack>
   );
 };

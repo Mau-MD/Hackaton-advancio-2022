@@ -5,6 +5,7 @@ import { authRouter } from "./auth";
 import { eventsRouter } from "./events";
 import { cityRouter } from "./city";
 import { schoolRouter } from "./school";
+import { registrationRouter } from "./registration";
 
 export const appRouter = router({
   example: exampleRouter,
@@ -12,6 +13,7 @@ export const appRouter = router({
   events: eventsRouter,
   city: cityRouter,
   school: schoolRouter,
+  registration: registrationRouter,
 });
 
 // export type definition of API

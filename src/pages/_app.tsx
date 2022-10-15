@@ -7,6 +7,7 @@ import { MantineProvider } from "@mantine/styles";
 import { AppShell, Container, Text } from "@mantine/core";
 import { useState } from "react";
 import { HeaderSearchProps, Navbar } from "../components/core/Navbar";
+import { NotificationsProvider } from "@mantine/notifications";
 
 interface NavLink {
   link: string;
@@ -24,13 +25,15 @@ const MyApp: AppType<{ session: Session | null }> = ({
 
   return (
     <MantineProvider withCSSVariables withNormalizeCSS>
-      <SessionProvider session={session}>
-        <AppShell padding={"md"} header={<Navbar links={links} />}>
-          <Container>
-            <Component {...pageProps} />
-          </Container>
-        </AppShell>
-      </SessionProvider>
+      <NotificationsProvider>
+        <SessionProvider session={session}>
+          <AppShell padding={"md"} header={<Navbar links={links} />}>
+            <Container>
+              <Component {...pageProps} />
+            </Container>
+          </AppShell>
+        </SessionProvider>
+      </NotificationsProvider>
     </MantineProvider>
   );
 };

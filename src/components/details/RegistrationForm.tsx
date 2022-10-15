@@ -8,39 +8,74 @@ import {
   Card,
   Stack,
 } from "@mantine/core";
+import { trpc } from "../../utils/trpc";
+import { showNotification } from "@mantine/notifications";
 
-const RegistrationForm = () => {
-  const form = useForm({
+interface FormValues {
+  email: string;
+  name: string;
+  phone: string;
+}
+
+interface Props {
+  id: string;
+}
+
+const RegistrationForm = ({ id }: Props) => {
+  const form = useForm<FormValues>({
     initialValues: {
       email: "",
-      nombre: "",
-      telefono: "",
+      name: "",
+      phone: "",
     },
 
     validate: {
-      email: (value) => (/^\S+@\S+$/.test(value) ? null : "correo invalido"),
-      telefono: (value) => (value.length === 12 ? null : "telefono invalido"),
+      name: (value) => (value.length > 0 ? null : "El name es requerido"),
+      email: (value) => (/^\S+@\S+$/.test(value) ? null : "Correo invalido"),
+      phone: (value) => (value.length > 0 ? null : "El telefono es requerido"),
     },
   });
+
+  const submitRegistration = trpc.registration.createRegistration.useMutation({
+    onSuccess: () => {
+      showNotification({
+        message: "Registro exitoso",
+        title: "Exito",
+        color: "green",
+      });
+    },
+  });
+
+  const handleFormSubmit = (values: FormValues) => {
+    submitRegistration.mutate({ ...values, eventId: id });
+  };
+
   return (
     <Card sx={{ width: "100%" }} withBorder shadow={"lg"}>
-      <form onSubmit={form.onSubmit((values) => console.log(values))}>
+      <form onSubmit={form.onSubmit(handleFormSubmit)}>
         <Stack>
+          <TextInput
+            withAsterisk
+            label="Nombre"
+            placeholder="Daniel Barocio"
+            {...form.getInputProps("name")}
+          />
           <TextInput
             withAsterisk
             label="Email"
             placeholder="your@email.com"
             {...form.getInputProps("email")}
           />
-          <TextInput withAsterisk label="Nombre" placeholder="Daniel Barocio" />
           <TextInput
             withAsterisk
             label="Telefono"
             placeholder="646 199 2149"
-            {...form.getInputProps("telefono")}
+            {...form.getInputProps("phone")}
           />
           <Group position="right" mt="md">
-            <Button type="submit">Registrar</Button>
+            <Button type="submit" loading={submitRegistration.isLoading}>
+              Registrar
+            </Button>
           </Group>
         </Stack>
       </form>
