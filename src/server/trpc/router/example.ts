@@ -1,7 +1,8 @@
 import { router, publicProcedure } from "../trpc";
-import sendSMS from '../../twilio/sms';
 import { z } from "zod";
+import sendSMS from '../../twilio/sms';
 import sendWhatsapp from "../../twilio/whatsapp";
+import sendEmail from "../../twilio/email"
 
 export const exampleRouter = router({
   hello: publicProcedure
@@ -14,10 +15,13 @@ export const exampleRouter = router({
   getAll: publicProcedure.query(({ ctx }) => {
     return ctx.prisma.example.findMany();
   }),
-  sendsms: publicProcedure.input(z.string()).mutation(({ input }) => {
+  sendSMS: publicProcedure.input(z.string()).mutation(({ input }) => {
     sendSMS(input);
   }),
-  sendwhatsapp: publicProcedure.input(z.string()).mutation(({ input }) => {
+  sendWhatsapp: publicProcedure.input(z.string()).mutation(({ input }) => {
     sendWhatsapp(input);
-  })
+  }),
+  sendEmail: publicProcedure.input(z.string()).mutation(({ input }) => {
+    sendEmail(input);
+  }),
 });
