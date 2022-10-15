@@ -26,4 +26,9 @@ export const registrationRouter = router({
       });
       return registration;
     }),
+  getAttendeesCount: publicProcedure
+    .input(z.string())
+    .query(({ input, ctx }) => {
+      return ctx.prisma.eventRegistration.count({ where: { eventId: input } });
+    }),
 });

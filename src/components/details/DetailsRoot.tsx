@@ -1,4 +1,12 @@
-import { Box, Title, Text, Group, Stack, BackgroundImage } from "@mantine/core";
+import {
+  Box,
+  Title,
+  Text,
+  Group,
+  Stack,
+  BackgroundImage,
+  Badge,
+} from "@mantine/core";
 import { format } from "date-fns";
 import { es } from "date-fns/locale";
 import { trpc } from "../../utils/trpc";
@@ -12,6 +20,8 @@ interface Props {
 
 const DetailsRoot = ({ id }: Props) => {
   const { data: event, isLoading } = trpc.events.getEventFromId.useQuery(id);
+  const { data: attendees, isLoading: isLoadingAttendees } =
+    trpc.registration.getAttendeesCount.useQuery(id);
 
   if (!event) {
     return <div>Loading...</div>;
@@ -19,7 +29,10 @@ const DetailsRoot = ({ id }: Props) => {
 
   return (
     <Stack>
-      <Title>{event.title}</Title>
+      <Group>
+        <Title>{event.title}</Title>
+        <Badge>{attendees} Registrados</Badge>
+      </Group>
       <Group>
         <Text transform="uppercase" color={"gray"}>
           {_.capitalize(format(event.date, "PPPP", { locale: es }))}
