@@ -16,7 +16,7 @@ const Testing : NextPage = () => {
   }
 
   const handleEmail = () => {
-    callEmail.mutate("josea.solis@cetys.edu.mx");
+    callEmail.mutate("oscar.encinas@cetys.edu.mx");
   }
 
   return (    

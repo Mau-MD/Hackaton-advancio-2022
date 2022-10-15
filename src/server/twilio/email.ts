@@ -6,9 +6,11 @@ const sendEmail = (to_email: string) => {
     let msg = {
         to: to_email,
         from: 'oscar.encinas@cetys.edu.mx',
-        subject: 'Sending with SendGrid is Fun',
-        text: 'and easy to do anywhere, even with Node.js',
-        html: '<strong>and easy to do anywhere, even with Node.js</strong>',
+        subject: 'Acerca de tu cuenta',
+        html: `<p><b>Tu cuenta ha sido creada exitosamente!</b></p><p>Hemos recibido tu aplicación de registro. 
+        Estamos orgullosos de anunciar que ya eres parte de esta asombrosa comunidad. Muchas gracias por todo.
+        Te invitamos a seguir explorando para conocer todo lo que tenemos para ofrecer! <b>Puedes seguir explorando 
+        dando click al siguiente enlace: </b>https://app.sendgrid.com/email_activity.</p>`
     }
     sgMail
         .send(msg)
