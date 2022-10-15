@@ -15,27 +15,40 @@ export const exampleRouter = router({
   getAll: publicProcedure.query(({ ctx }) => {
     return ctx.prisma.example.findMany();
   }),
-  sendSMS: publicProcedure.input(z
-    .object({
+  sendSMS: publicProcedure.input(z.object({
+    event: z.object({
       name_event: z.string(),
       description_event: z.string(),
       date_event: z.string(),
-      cellphone_number: z.string()
-    }))
+      time_event: z.string(),
+    }),
+    cellphone_number: z.string()
+  }))
     .mutation(({ input }) => {
-      sendSMS(input);
+      sendSMS(input.event, input.cellphone_number);
   }),
-  sendWhatsapp: publicProcedure.input(z
-    .object({
+  sendWhatsapp: publicProcedure.input(z.object({
+    event: z.object({
       name_event: z.string(),
       description_event: z.string(),
       date_event: z.string(),
-      cellphone_number: z.string()
-    }))
+      time_event: z.string(),
+    }),
+    cellphone_number: z.string()
+  }))
     .mutation(({ input }) => {
-      sendWhatsapp(input);
+      sendSMS(input.event, input.cellphone_number);
   }),
-  sendEmail: publicProcedure.input(z.string()).mutation(({ input }) => {
-    sendEmail(input);
+  sendEmail: publicProcedure.input(z.object({
+    event: z.object({
+      name_event: z.string(),
+      description_event: z.string(),
+      date_event: z.string(),
+      time_event: z.string(),
+    }),
+    to_email: z.string()
+  }))
+    .mutation(({ input }) => {
+      sendEmail(input.event, input.to_email);
   }),
 });

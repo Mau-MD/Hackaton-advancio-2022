@@ -9,24 +9,38 @@ const Testing : NextPage = () => {
 
   const handleSMS = () => {
     callSMS.mutate({
-      name_event: 'a',
-      description_event: 'b',
-      date_event: 'c',
-      cellphone_number: '+5216611305053'
+      event: {
+        name_event: 'a',
+        description_event: 'b',
+        date_event: 'c',
+        time_event: '',
+      },
+        cellphone_number: '+5216611305053'
     });
   }
 
   const handleWhatsapp = () => {
     callWhatsapp.mutate({
-      name_event: 'a',
-      description_event: 'b',
-      date_event: 'c',
-      cellphone_number: '+5216611305053'
+      event: {
+        name_event: 'a',
+        description_event: 'b',
+        date_event: 'c',
+        time_event: '',
+      },
+        cellphone_number: '+5216611305053'
     });
   }
 
   const handleEmail = () => {
-    callEmail.mutate("oscar.encinas@cetys.edu.mx");
+    callEmail.mutate({
+      event: {
+        name_event: 'a',
+        description_event: 'b',
+        date_event: 'c',
+        time_event: '',
+      },
+        to_email: 'oscar.encinas@cetys.edu.mx'
+    });
   }
 
   return (    
