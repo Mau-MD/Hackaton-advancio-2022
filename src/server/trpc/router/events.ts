@@ -20,6 +20,9 @@ export const eventsRouter = router({
       if (input.date?.length === 0) input.date = undefined;
 
       return ctx.prisma.event.findMany({
+        orderBy: {
+          date: "asc",
+        },
         where: {
           AND: [
             {
@@ -48,4 +51,7 @@ export const eventsRouter = router({
         },
       });
     }),
+  getEventFromId: publicProcedure.input(z.string()).query(({ input, ctx }) => {
+    return ctx.prisma.event.findUnique({ where: { id: input } });
+  }),
 });

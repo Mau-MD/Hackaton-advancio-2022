@@ -7,17 +7,38 @@ import {
   TextInput,
   Title,
 } from "@mantine/core";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { DateRangePicker, DateRangePickerValue } from "@mantine/dates";
 import EventSearchCard from "./EventSearchCard";
 import { trpc } from "../../utils/trpc";
 import { useDebouncedState, useDebouncedValue } from "@mantine/hooks";
+import { useRouter } from "next/router";
 
 const SearchRoot = () => {
-  const [query, setQuery] = useState("");
-  const [queryCities, setQueryCities] = useState<string[]>([]);
-  const [querySchools, setQuerySchools] = useState<string[]>([]);
+  const router = useRouter();
+  const {
+    query: initialQuery,
+    school: initialSchool,
+    city: initialCity,
+  } = router.query as { query: string; school: string; city: string };
+
+  const [query, setQuery] = useState(initialQuery || "");
+  const [queryCities, setQueryCities] = useState<string[]>(
+    initialSchool ? [initialSchool] : []
+  );
+  const [querySchools, setQuerySchools] = useState<string[]>(
+    initialCity ? [initialCity] : []
+  );
   const [queryRangeDate, setQueryRangeDate] = useState<Date[]>([]);
+
+  useEffect(() => {
+    if (initialSchool) {
+      setQuerySchools([initialSchool]);
+    }
+    if (initialCity) {
+      setQueryCities([initialCity]);
+    }
+  }, [initialSchool, initialCity]);
 
   const [debouncedQuery] = useDebouncedValue(query, 300);
   const [debouncedCities] = useDebouncedValue(queryCities, 300);
