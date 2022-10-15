@@ -1,4 +1,5 @@
 import { router, publicProcedure } from "../trpc";
+import sendSMS from '../../twilio/sms';
 import { z } from "zod";
 
 export const exampleRouter = router({
@@ -11,5 +12,8 @@ export const exampleRouter = router({
     }),
   getAll: publicProcedure.query(({ ctx }) => {
     return ctx.prisma.example.findMany();
+  }),
+  call: publicProcedure.input(z.string()).mutation(({ input }) => {
+    sendSMS(input);
   }),
 });
