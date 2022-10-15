@@ -1,4 +1,4 @@
-import { Group, Textarea, TextInput, useMantineTheme, Text } from '@mantine/core';
+import { Group, Textarea, TextInput, useMantineTheme, Text, Stack } from '@mantine/core';
 import { DatePicker, TimeInput } from '@mantine/dates';
 import { Dropzone, DropzoneProps, IMAGE_MIME_TYPE } from '@mantine/dropzone';
 import { IconClock, IconPhoto, IconUpload, IconX } from '@tabler/icons';
@@ -7,7 +7,7 @@ import React, { useState } from 'react';
 const FormView = (props: Partial<DropzoneProps>) => {
     const theme = useMantineTheme();
     return (
-        <>
+        <Stack>
         {/* Nombre de la ventana */}
         <Group position='center'>
             <h2>Crea un nuevo evento!</h2>
@@ -77,7 +77,7 @@ const FormView = (props: Partial<DropzoneProps>) => {
                     </div>
                 </Group>
             </Dropzone>
-        </>
+        </Stack>
     )
     
 }
