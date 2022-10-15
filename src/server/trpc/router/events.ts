@@ -54,4 +54,38 @@ export const eventsRouter = router({
   getEventFromId: publicProcedure.input(z.string()).query(({ input, ctx }) => {
     return ctx.prisma.event.findUnique({ where: { id: input } });
   }),
+  createEvent: publicProcedure
+    .input(
+      z.object({
+        title: z.string(),
+        description: z.string(),
+        location: z.string(),
+        date: z.date(),
+        image: z.string(),
+        city: z.string(),
+        school: z.string(),
+      })
+    )
+    .mutation(async ({ input, ctx }) => {
+      const event = await ctx.prisma.event.create({
+        data: {
+          title: input.title,
+          description: input.description,
+          location: input.location,
+          date: input.date,
+          image: input.image,
+          city: {
+            connect: {
+              id: input.city,
+            },
+          },
+          school: {
+            connect: {
+              id: input.school,
+            },
+          },
+        },
+      });
+      return event;
+    }),
 });

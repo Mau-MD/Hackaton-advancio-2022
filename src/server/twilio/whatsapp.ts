@@ -1,10 +1,12 @@
 import client from './twilio';
+import Event from './eventtype'
 
-const sendWhatsapp = (number: string) => {
+const sendWhatsapp = (event: Event) => {
   var message = client.messages.create({
-    body: 'This is the whatsapp that made the Kessel Run in fourteen parsecs?',
+    body: "Don't forget your next appointment!\n" + event.name_event.toUpperCase() + 
+    "\n" + event.description_event.toUpperCase() + "\nThe appointment of the event is the following: " + event.date_event,
     from: 'whatsapp:+14155238886',
-    to: 'whatsapp:' + number
+    to: 'whatsapp:' + event.cellphone_number
     })
     .then((message: { status: any; }) =>  console.log(message.status))
     .done();

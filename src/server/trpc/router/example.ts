@@ -15,11 +15,25 @@ export const exampleRouter = router({
   getAll: publicProcedure.query(({ ctx }) => {
     return ctx.prisma.example.findMany();
   }),
-  sendSMS: publicProcedure.input(z.string()).mutation(({ input }) => {
-    sendSMS(input);
+  sendSMS: publicProcedure.input(z
+    .object({
+      name_event: z.string(),
+      description_event: z.string(),
+      date_event: z.string(),
+      cellphone_number: z.string()
+    }))
+    .mutation(({ input }) => {
+      sendSMS(input);
   }),
-  sendWhatsapp: publicProcedure.input(z.string()).mutation(({ input }) => {
-    sendWhatsapp(input);
+  sendWhatsapp: publicProcedure.input(z
+    .object({
+      name_event: z.string(),
+      description_event: z.string(),
+      date_event: z.string(),
+      cellphone_number: z.string()
+    }))
+    .mutation(({ input }) => {
+      sendWhatsapp(input);
   }),
   sendEmail: publicProcedure.input(z.string()).mutation(({ input }) => {
     sendEmail(input);

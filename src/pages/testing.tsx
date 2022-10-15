@@ -8,11 +8,21 @@ const Testing : NextPage = () => {
   const callEmail = trpc.example.sendEmail.useMutation();
 
   const handleSMS = () => {
-    callSMS.mutate("+526611305053");
+    callSMS.mutate({
+      name_event: 'a',
+      description_event: 'b',
+      date_event: 'c',
+      cellphone_number: '+5216611305053'
+    });
   }
 
   const handleWhatsapp = () => {
-    callWhatsapp.mutate("+5216611305053");
+    callWhatsapp.mutate({
+      name_event: 'a',
+      description_event: 'b',
+      date_event: 'c',
+      cellphone_number: '+5216611305053'
+    });
   }
 
   const handleEmail = () => {
