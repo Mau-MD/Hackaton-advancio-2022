@@ -1,14 +1,18 @@
 import { Group, Text, Stack, Box } from "@mantine/core";
 import { Navbar, NavLink } from "@mantine/core";
 import { IconCalendarEvent, IconChevronRight, IconEdit } from "@tabler/icons";
+import { useRouter } from "next/router";
 import { useState } from "react";
 
 const Sidebar = () => {
   const [active, setActive] = useState(0);
+  const route = useRouter();
 
-  const handleSelect = (section) => {
+  const handleSelect = (section: number) => {
     setActive(section);
+    route.push("/admin/form");
   };
+
   return (
     <Navbar width={{ base: 300 }}>
       <Stack>
