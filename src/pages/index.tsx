@@ -6,8 +6,6 @@ const Home: NextPage = () => {
 
   return (
     <div>
-      adios
-      <Button>Hola</Button>
       <MainRoot />
 
     </div>
