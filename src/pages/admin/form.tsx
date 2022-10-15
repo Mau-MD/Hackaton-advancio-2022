@@ -15,6 +15,7 @@ const FormView = (props: Partial<DropzoneProps>) => {
         place: string;
         date: Date;
         time: TimeRanges;
+        image: File;
     }
 
     const form = useForm({
@@ -23,7 +24,8 @@ const FormView = (props: Partial<DropzoneProps>) => {
             description: '',
             place: '',
             date: now,
-            time: null
+            time: null,
+            image: null
         },
     
         validate: {
@@ -79,7 +81,7 @@ const FormView = (props: Partial<DropzoneProps>) => {
         {/* Subir imagen */}
             <Text weight={600} size="sm" mt={5} mb={1}>Agrega imagenes del evento</Text>
             <Dropzone
-            onDrop={(files) => console.log('accepted files', files)}
+            onDrop={(files) => form.setFieldValue("image", files)}
             onReject={(files) => console.log('rejected files', files)}
             maxSize={3 * 1024 ** 2}
             accept={IMAGE_MIME_TYPE}
