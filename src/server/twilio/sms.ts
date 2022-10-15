@@ -1,10 +1,12 @@
 import client from './twilio';
+import Event from './eventtype'
 
-const sendSMS = (number: string) => {
+const sendSMS = (event: Event) => {
   var message = client.messages.create({
-    body: 'This is the ship that made the Kessel Run in fourteen parsecs?',
+    body: "Don't forget your next appointment!\n" + event.name_event.toUpperCase() + 
+    "\n" + event.description_event.toUpperCase() + "\nThe appointment of the event is the following: " + event.date_event,
     from: '+18316042802',
-    to: number
+    to: event.cellphone_number
   })
   .then((message: { status: any; }) =>  console.log(message.status))
   .done();
