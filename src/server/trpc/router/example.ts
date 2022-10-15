@@ -27,10 +27,13 @@ export const exampleRouter = router({
   }),
   sendWhatsapp: publicProcedure.input(z
     .object({
-      event_data: z.string(), 
-      cellphone_number: z.string()}))
+      name_event: z.string(),
+      description_event: z.string(),
+      date_event: z.string(),
+      cellphone_number: z.string()
+    }))
     .mutation(({ input }) => {
-      sendWhatsapp(input.event_data, input.cellphone_number);
+      sendWhatsapp(input);
   }),
   sendEmail: publicProcedure.input(z.string()).mutation(({ input }) => {
     sendEmail(input);

@@ -18,8 +18,11 @@ const Testing : NextPage = () => {
 
   const handleWhatsapp = () => {
     callWhatsapp.mutate({
-      event_data: "limpieza de playa a las 15:00 horas el martes 24", 
-      cellphone_number: "+5216611305053"});
+      name_event: 'a',
+      description_event: 'b',
+      date_event: 'c',
+      cellphone_number: '+5216611305053'
+    });
   }
 
   const handleEmail = () => {

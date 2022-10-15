@@ -1,11 +1,5 @@
 import client from './twilio';
-
-interface Event {
-  name_event: string,
-  description_event: string,
-  date_event: string,
-  cellphone_number: string
-}
+import Event from './eventtype'
 
 const sendSMS = (event: Event) => {
   var message = client.messages.create({
