@@ -10,18 +10,28 @@ import { HeaderSearchProps, Navbar } from "../components/core/Navbar";
 import { NotificationsProvider } from "@mantine/notifications";
 
 interface NavLink {
-  link: string;
+  link?: string;
   label: string;
   links?: { link: string; label: string }[];
 }
-
-const links: NavLink[] = [{ label: "Home", link: "/" }];
 
 const MyApp: AppType<{ session: Session | null }> = ({
   Component,
   pageProps: { session, ...pageProps },
 }) => {
   const [opened, setOpened] = useState(false);
+
+  const { data: cities, isLoading: isLoadingCities } =
+    trpc.city.getCitiesForLink.useQuery();
+  const { data: schools, isLoading: isLoadingSchools } =
+    trpc.school.getSchoolsForLink.useQuery();
+
+  const links: NavLink[] = [
+    { label: "Inicio", link: "/" },
+    { label: "Busqueda", link: "/search" },
+    { label: "Ciudades", links: cities || [] },
+    { label: "Escuelas", links: schools || [] },
+  ];
 
   return (
     <MantineProvider withCSSVariables withNormalizeCSS>

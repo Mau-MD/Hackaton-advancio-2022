@@ -10,6 +10,7 @@ import {
 } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import { IconChevronDown } from "@tabler/icons";
+import { useRouter } from "next/router";
 
 const useStyles = createStyles((theme) => ({
   inner: {
@@ -59,7 +60,7 @@ const useStyles = createStyles((theme) => ({
 
 export interface HeaderSearchProps {
   links: {
-    link: string;
+    link?: string;
     label: string;
     links?: { link: string; label: string }[];
   }[];
@@ -68,26 +69,23 @@ export interface HeaderSearchProps {
 export const Navbar = ({ links }: HeaderSearchProps) => {
   const [opened, { toggle }] = useDisclosure(false);
   const { classes } = useStyles();
+  const router = useRouter();
 
   const items = links.map((link) => {
     const menuItems = link.links?.map((item) => (
-      <Menu.Item key={item.link}>{item.label}</Menu.Item>
+      <Menu.Item key={item.link} onClick={() => router.push(item.link)}>
+        {item.label}
+      </Menu.Item>
     ));
 
     if (menuItems) {
       return (
         <Menu key={link.label} trigger="hover" exitTransitionDuration={0}>
           <Menu.Target>
-            <a
-              href={link.link}
-              className={classes.link}
-              onClick={(event) => event.preventDefault()}
-            >
-              <Center>
-                <span className={classes.linkLabel}>{link.label}</span>
-                <IconChevronDown size={12} stroke={1.5} />
-              </Center>
-            </a>
+            <Center className={classes.link}>
+              <span className={classes.linkLabel}>{link.label}</span>
+              <IconChevronDown size={12} stroke={1.5} />
+            </Center>
           </Menu.Target>
           <Menu.Dropdown>{menuItems}</Menu.Dropdown>
         </Menu>
@@ -95,14 +93,14 @@ export const Navbar = ({ links }: HeaderSearchProps) => {
     }
 
     return (
-      <a
+      <span
         key={link.label}
-        href={link.link}
         className={classes.link}
-        onClick={(event) => event.preventDefault()}
+        style={{ cursor: "pointer" }}
+        onClick={() => router.push(link?.link || "")}
       >
         {link.label}
-      </a>
+      </span>
     );
   });
 

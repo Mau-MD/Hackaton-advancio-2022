@@ -10,4 +10,10 @@ export const schoolRouter = router({
       return { value: school.id, label: school.name };
     });
   }),
+  getSchoolsForLink: publicProcedure.query(async ({ ctx }) => {
+    const schools = await ctx.prisma.school.findMany({});
+    return schools.map((school) => {
+      return { label: school.name, link: `/search?school=${school.id}` };
+    });
+  }),
 });
