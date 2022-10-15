@@ -7,10 +7,15 @@ import {
   Burger,
   Container,
   Title,
+  Affix,
+  ColorSchemeProvider,
+  MantineProvider
 } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import { IconChevronDown } from "@tabler/icons";
 import { useRouter } from "next/router";
+import LightAndDarkModeButton from "./LightDarkButton";
+
 
 const useStyles = createStyles((theme) => ({
   inner: {
@@ -107,6 +112,11 @@ export const Navbar = ({ links }: HeaderSearchProps) => {
   return (
     <Header height={56} mb={120}>
       <Container>
+      <Affix position={{ top: 20, left: 20 }}>
+        <ColorShemeProvider colorScheme ={colorScheme} toggleColorSheme={toggleColorSheme}>
+          <LightAndDarkModeButton />
+        </ColorShemeProvider>
+      </Affix>
         <div className={classes.inner}>
           <Title
             order={4}
