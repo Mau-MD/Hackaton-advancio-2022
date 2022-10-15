@@ -80,7 +80,6 @@ const FormView = (props: Partial<DropzoneProps>) => {
             </Dropzone>
         </Stack>
     )
-    
 }
 
 export default FormView;
