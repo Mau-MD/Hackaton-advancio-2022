@@ -25,6 +25,7 @@ const MainRoot = () => {
           <SecondaryEvent
             key={event.id}
             title={event.title}
+            date={event.date}
             id={event.id}
             image={event.image}
           />

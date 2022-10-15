@@ -48,4 +48,7 @@ export const eventsRouter = router({
         },
       });
     }),
+  getEventFromId: publicProcedure.input(z.string()).query(({ input, ctx }) => {
+    return ctx.prisma.event.findUnique({ where: { id: input } });
+  }),
 });

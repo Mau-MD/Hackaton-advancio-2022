@@ -4,6 +4,7 @@ import { type } from "os";
 import { format } from "date-fns";
 import es from "date-fns/locale/es";
 import _ from "lodash";
+import { useRouter } from "next/router";
 
 interface Props {
   id: string;
@@ -25,6 +26,8 @@ const EventSearchCard = ({
   date,
   image = defaultImage,
 }: Props) => {
+  const router = useRouter();
+
   return (
     <Card shadow="sm" p="lg" radius="md" withBorder>
       <Card.Section>
@@ -65,7 +68,14 @@ const EventSearchCard = ({
             justifyContent: "end",
           }}
         >
-          <Button variant="light" color="blue" fullWidth mt="md" radius="md">
+          <Button
+            variant="light"
+            color="blue"
+            fullWidth
+            mt="md"
+            radius="md"
+            onClick={() => router.push(`/event/${id}`)}
+          >
             Registarse
           </Button>
         </div>
