@@ -11,6 +11,7 @@ import {
 import { format } from "date-fns";
 import { es } from "date-fns/locale";
 import _ from "lodash";
+import { useRouter } from "next/router";
 
 interface Props {
   id: string;
@@ -20,8 +21,16 @@ interface Props {
 }
 
 function SecondaryEvent({ id, title, image, date }: Props) {
+  const router = useRouter();
   return (
-    <Card shadow="sm" p="md" radius="md" withBorder>
+    <Card
+      shadow="sm"
+      p="md"
+      radius="md"
+      withBorder
+      onClick={() => router.push(`/event/${id}`)}
+      style={{ cursor: "pointer" }}
+    >
       <Card.Section>
         <Image
           src={
