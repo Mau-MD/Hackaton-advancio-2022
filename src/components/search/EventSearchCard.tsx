@@ -1,6 +1,10 @@
 import { Card, Image, Text, Badge, Button, Group, Stack } from "@mantine/core";
 import { IconFile } from "@tabler/icons";
 import { type } from "os";
+import { format } from "date-fns";
+import es from "date-fns/locale/es";
+import _ from "lodash";
+import { useRouter } from "next/router";
 
 interface Props {
   id: string;
@@ -8,6 +12,7 @@ interface Props {
   badges: string[];
   description: string;
   image?: string;
+  date: Date;
 }
 
 const defaultImage =
@@ -18,8 +23,11 @@ const EventSearchCard = ({
   title,
   badges,
   description,
+  date,
   image = defaultImage,
 }: Props) => {
+  const router = useRouter();
+
   return (
     <Card shadow="sm" p="lg" radius="md" withBorder>
       <Card.Section>
@@ -31,9 +39,12 @@ const EventSearchCard = ({
       </Card.Section>
       <Stack>
         <div>
-          <Group position="apart" mt="md" mb="xs">
+          <div style={{ margin: "1em 0 " }}>
             <Text weight={500}>{title}</Text>
-          </Group>
+            <Text color="dimmed">
+              {_.capitalize(format(date, "PPPP", { locale: es }))}
+            </Text>
+          </div>
 
           <Group style={{ height: "20px", overflowY: "hidden" }} mb={20}>
             {badges.map((badge) => (
@@ -57,7 +68,14 @@ const EventSearchCard = ({
             justifyContent: "end",
           }}
         >
-          <Button variant="light" color="blue" fullWidth mt="md" radius="md">
+          <Button
+            variant="light"
+            color="blue"
+            fullWidth
+            mt="md"
+            radius="md"
+            onClick={() => router.push(`/event/${id}`)}
+          >
             Registarse
           </Button>
         </div>

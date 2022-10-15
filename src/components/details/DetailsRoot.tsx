@@ -1,17 +1,44 @@
-import { Box, Title, Text, Group, Stack, BackgroundImage } from "@mantine/core";
+import {
+  Box,
+  Title,
+  Text,
+  Group,
+  Stack,
+  BackgroundImage,
+  Badge,
+} from "@mantine/core";
+import { format } from "date-fns";
+import { es } from "date-fns/locale";
+import { trpc } from "../../utils/trpc";
 import ImageBanner from "./ImageBanner";
 import RegistrationForm from "./RegistrationForm";
-const DetailsRoot = () => {
+import _ from "lodash";
+
+interface Props {
+  id: string;
+}
+
+const DetailsRoot = ({ id }: Props) => {
+  const { data: event, isLoading } = trpc.events.getEventFromId.useQuery(id);
+  const { data: attendees, isLoading: isLoadingAttendees } =
+    trpc.registration.getAttendeesCount.useQuery(id);
+
+  if (!event) {
+    return <div>Loading...</div>;
+  }
+
   return (
     <Stack>
-      <Title>Nombre Evento</Title>
+      <Group>
+        <Title>{event.title}</Title>
+        <Badge>{attendees} Registrados</Badge>
+      </Group>
       <Group>
         <Text transform="uppercase" color={"gray"}>
-          fecha del evento
+          {_.capitalize(format(event.date, "PPPP", { locale: es }))}
         </Text>
         <Text transform="uppercase" color={"gray"}>
-          {" "}
-          lugar del evento
+          {event.location}
         </Text>
       </Group>
       <ImageBanner />
@@ -19,22 +46,9 @@ const DetailsRoot = () => {
         <Text size={"xl"} weight={700} color={"blue"}>
           Descripcion
         </Text>
-        <Text align={"justify"}>
-          Lorem, ipsum dolor sit amet consectetur adipisicing elit. Eius aut
-          dicta voluptas neque mollitia repellendus voluptatum atque maxime
-          laudantium. Esse modi impedit rem. Similique possimus assumenda,
-          obcaecati cum consectetur nulla magni! Ducimus ea, consequatur beatae
-          necessitatibus commodi nam ullam ipsa recusandae nihil. Facere illum,
-          delectus facilis sint magnam, doloremque quisquam animi corporis
-          deserunt fuga sed exercitationem, consectetur tempore consequuntur.
-          Optio accusantium explicabo quasi nostrum fugiat numquam animi natus?
-          Ut in maxime eum, rerum quidem, commodi illum cumque velit facere
-          doloribus quae nobis voluptate. Commodi excepturi quam dicta obcaecati
-          quae itaque doloribus quos quis at! Voluptatibus veniam alias rerum
-          quia neque.
-        </Text>
+        <Text align={"justify"}>{event.description}</Text>
       </Stack>
-      <RegistrationForm />
+      <RegistrationForm id={id} />
     </Stack>
   );
 };

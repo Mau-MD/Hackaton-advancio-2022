@@ -1,18 +1,52 @@
-import { Card, Image, Text, Badge, Button, Group } from '@mantine/core';
+import {
+  Card,
+  Image,
+  Text,
+  Badge,
+  Button,
+  Group,
+  Title,
+  Stack,
+} from "@mantine/core";
+import { format } from "date-fns";
+import { es } from "date-fns/locale";
+import _ from "lodash";
+import { useRouter } from "next/router";
 
-function SecondaryEvent() {
+interface Props {
+  id: string;
+  title: string;
+  image: string;
+  date: Date;
+}
+
+function SecondaryEvent({ id, title, image, date }: Props) {
+  const router = useRouter();
   return (
-    <Card shadow="sm" p="md" radius="md" withBorder>
+    <Card
+      shadow="sm"
+      p="md"
+      radius="md"
+      withBorder
+      onClick={() => router.push(`/event/${id}`)}
+      style={{ cursor: "pointer" }}
+    >
       <Card.Section>
         <Image
-          src="https://images.unsplash.com/photo-1527004013197-933c4bb611b3?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=720&q=80"
+          src={
+            image ||
+            "https://images.unsplash.com/photo-1527004013197-933c4bb611b3?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=720&q=80"
+          }
           height={160}
           alt="Norway"
         />
       </Card.Section>
-      <Group mt="s" mb="s">
-        <Text weight={500}><h4>Generic Event</h4></Text>
-      </Group>
+      <div style={{ marginTop: "1rem" }}>
+        <Title order={4}>{title}</Title>
+        <Text color="dimmed">
+          {_.capitalize(format(date, "PPPP", { locale: es }))}
+        </Text>
+      </div>
     </Card>
   );
 }
