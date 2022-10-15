@@ -1,11 +1,11 @@
 import { Box, Title, Text, Group, Stack, BackgroundImage } from "@mantine/core";
-import { useForm } from "@mantine/form";
 import ImageBanner from "./ImageBanner";
+import RegistrationForm from "./RegistrationForm";
 const DetailsRoot = () => {
   return (
-    <Box>
+    <Stack>
       <Title>Nombre Evento</Title>
-      <Group mt={10}>
+      <Group>
         <Text transform="uppercase" color={"gray"}>
           fecha del evento
         </Text>
@@ -15,7 +15,7 @@ const DetailsRoot = () => {
         </Text>
       </Group>
       <ImageBanner />
-      <Stack mt={20}>
+      <Stack>
         <Text size={"xl"} weight={700} color={"blue"}>
           Descripcion
         </Text>
@@ -34,7 +34,8 @@ const DetailsRoot = () => {
           quia neque.
         </Text>
       </Stack>
-    </Box>
+      <RegistrationForm />
+    </Stack>
   );
 };
 
