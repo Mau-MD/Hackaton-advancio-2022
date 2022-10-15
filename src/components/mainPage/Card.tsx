@@ -12,7 +12,7 @@ function Demo() {
       </Card.Section>
 
       <Group mt="s" mb="s">
-        <Text weight={500}><h2>Main Event</h2></Text>
+        <Text weight={500}><h2>Standup Daniel Barocio</h2></Text>
       </Group>
     </Card>
   );
