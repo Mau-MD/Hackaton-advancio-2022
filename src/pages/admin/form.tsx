@@ -3,6 +3,23 @@ import { DatePicker, TimeInput } from '@mantine/dates';
 import { Dropzone, DropzoneProps, IMAGE_MIME_TYPE } from '@mantine/dropzone';
 import { IconClock, IconPhoto, IconUpload, IconX } from '@tabler/icons';
 import React, { useState } from 'react';
+import multer from 'multer';
+
+
+const inMemory = multer.memoryStorage();
+const uploadImage = multer({storage: inMemory}).single('image');
+const containerName = 'imagenes-hackaton';
+
+const getBlobName = (originalName:any) => {
+    const identifier = Math.random().toString().replace(/0\./, '');
+    return `${identifier} - ${originalName}`;
+};
+
+const reader = new FileReader();
+const [submittedFile, setFile] = React.useState(null)
+
+
+
 
 const FormView = (props: Partial<DropzoneProps>) => {
     const theme = useMantineTheme();
