@@ -6,7 +6,7 @@ import FormRoot from "../components/admin/form/FormRoot"
 const Home: NextPage = () => {
   return (
     <div>
-      <FormRoot />
+      <MainRoot />
     </div>
   );
 };

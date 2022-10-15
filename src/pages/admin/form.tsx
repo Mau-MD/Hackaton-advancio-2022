@@ -1,4 +1,4 @@
-import { Group, Textarea, TextInput, useMantineTheme, Text, Stack } from '@mantine/core';
+import { Group, Textarea, TextInput, useMantineTheme, Text, Stack, Button, Affix } from '@mantine/core';
 import { DatePicker, TimeInput } from '@mantine/dates';
 import { Dropzone, DropzoneProps, IMAGE_MIME_TYPE } from '@mantine/dropzone';
 import { IconClock, IconPhoto, IconUpload, IconX } from '@tabler/icons';
@@ -78,6 +78,11 @@ const FormView = (props: Partial<DropzoneProps>) => {
                     </div>
                 </Group>
             </Dropzone>
+            <Affix position={{ bottom: 20, right: 20 }}>
+                <Button uppercase>
+                Create event
+                </Button>
+            </Affix>
         </Stack>
     )
 }
