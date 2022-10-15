@@ -11,7 +11,7 @@ import {
 } from "@mantine/core";
 import { trpc } from "../../utils/trpc";
 import { showNotification } from "@mantine/notifications";
-import { storage } from "../../utils/storage";
+import Event from '../../server/twilio/eventtype';
 
 interface FormValues {
   email: string;
@@ -21,6 +21,20 @@ interface FormValues {
 
 interface Props {
   id: string;
+}
+
+const callEmail = trpc.example.sendEmail.useMutation();
+
+const handleEmail = (event: Event, to_email: string) => {
+  callEmail.mutate({
+    event: {
+      name_event: event.name_event,
+      description_event: event.description_event,
+      date_event: event.date_event,
+      time_event: event.time_event,
+    },
+      to_email: to_email
+  });
 }
 
 const RegistrationForm = ({ id }: Props) => {
