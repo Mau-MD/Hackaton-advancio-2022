@@ -20,6 +20,9 @@ export const eventsRouter = router({
       if (input.date?.length === 0) input.date = undefined;
 
       return ctx.prisma.event.findMany({
+        orderBy: {
+          date: "asc",
+        },
         where: {
           AND: [
             {
