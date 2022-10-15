@@ -1,11 +1,11 @@
 import type { NextPage } from "next";
 import { Button, Card } from "@mantine/core";
-import DetailsRoot from "../components/details/DetailsRoot";
+import MainRoot from "../components/mainPage/MainRoot";
 
 const Home: NextPage = () => {
   return (
     <div>
-      <DetailsRoot />
+      <MainRoot />
     </div>
   );
 };

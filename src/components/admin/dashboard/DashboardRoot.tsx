@@ -9,13 +9,13 @@ import {
 } from "@mantine/core";
 import React from "react";
 import { DateRangePicker, DateRangePickerValue } from "@mantine/dates";
-import EventSearchCard from "./EventSearchCard";
+import DashboardCard from "./DashboardCard";
 
-const SearchRoot = () => {
+const DashboardRoot = () => {
   return (
     <Stack>
-      <Title order={5}>Busqueda de Eventos</Title>
-      <TextInput label="Nombre del evento" />
+      <Title order={5}>Tus eventos: CETYS Universidad</Title>
+      <TextInput label="Nombre del evento" placeholder="Buscar evento" />
       <Group grow>
         <MultiSelect label="Ciudad" data={[]} />
         <MultiSelect label="Escuela" data={[]} />
@@ -32,19 +32,19 @@ const SearchRoot = () => {
           { maxWidth: 600, cols: 1, spacing: "sm" },
         ]}
       >
-        <EventSearchCard
+        <DashboardCard
           id={""}
           title={"Hack Ensenada"}
           badges={["Advancio", "CETYS Universidad"]}
           description="Unete a este hackaton"
         />
-        <EventSearchCard
+        <DashboardCard
           id={""}
           title={"Evento deportivo"}
           badges={["UABC", "Deporte", "Ensenada", "Tijuana"]}
           description="Participa en este deporte de quemados"
         />
-        <EventSearchCard
+        <DashboardCard
           id={""}
           title={"Hack Ensenada"}
           badges={["Advancio"]}
@@ -55,4 +55,4 @@ const SearchRoot = () => {
   );
 };
 
-export default SearchRoot;
+export default DashboardRoot;
