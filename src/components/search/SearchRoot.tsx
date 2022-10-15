@@ -12,9 +12,13 @@ import { DateRangePicker, DateRangePickerValue } from "@mantine/dates";
 import EventSearchCard from "./EventSearchCard";
 import { trpc } from "../../utils/trpc";
 import { useDebouncedState, useDebouncedValue } from "@mantine/hooks";
+import { useRouter } from "next/router";
 
 const SearchRoot = () => {
-  const [query, setQuery] = useState("");
+  const router = useRouter();
+  const { query: initialQuery } = router.query;
+
+  const [query, setQuery] = useState(initialQuery || "");
   const [queryCities, setQueryCities] = useState<string[]>([]);
   const [querySchools, setQuerySchools] = useState<string[]>([]);
   const [queryRangeDate, setQueryRangeDate] = useState<Date[]>([]);
