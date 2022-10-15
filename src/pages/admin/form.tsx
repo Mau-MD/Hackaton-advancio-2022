@@ -1,11 +1,23 @@
 import { Group, Textarea, TextInput, useMantineTheme, Text, Stack, Button, Affix } from '@mantine/core';
 import { DatePicker, TimeInput } from '@mantine/dates';
 import { Dropzone, DropzoneProps, IMAGE_MIME_TYPE } from '@mantine/dropzone';
+import { useForm } from '@mantine/form';
 import { IconClock, IconPhoto, IconUpload, IconX } from '@tabler/icons';
 import React, { useState } from 'react';
 
 const FormView = (props: Partial<DropzoneProps>) => {
     const theme = useMantineTheme();
+    
+    const form = useForm({
+        initialValues: {
+            email: '',
+            termsOfService: false,
+        },
+    
+        validate: {
+            email: (value) => (/^\S+@\S+$/.test(value) ? null : 'Invalid email'),
+        },
+    });
     return (
         <Stack>
         {/* Nombre de la ventana */}
