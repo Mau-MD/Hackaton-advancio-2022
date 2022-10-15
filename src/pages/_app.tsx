@@ -35,11 +35,18 @@ const MyApp: AppType<{ session: Session | null }> = ({
     { label: "Escuelas", links: schools || [] },
   ];
 
+  const router = useRouter();
+  console.log(router);
+
   return (
     <MantineProvider withCSSVariables withNormalizeCSS>
       <NotificationsProvider>
         <SessionProvider session={session}>
-          <AppShell padding={"md"} header={<Navbar links={links} />}>
+          <AppShell
+            padding={"md"}
+            header={<Navbar links={links} />}
+            navbar={router.pathname.startsWith("/admin") ? <Sidebar /> : <></>}
+          >
             <Container>
               <Component {...pageProps} />
             </Container>
