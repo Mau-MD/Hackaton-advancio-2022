@@ -9,3 +9,63 @@ datasource db {
     provider = "postgresql"
     url      = env("DATABASE_URL")
 }
+
+model Account {
+    id                String  @id @default(cuid())
+    userId            String
+    type              String
+    provider          String
+    providerAccountId String
+    refresh_token     String? @db.Text
+    access_token      String? @db.Text
+    expires_at        Int?
+    token_type        String?
+    scope             String?
+    id_token          String? @db.Text
+    session_state     String?
+    user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+    @@unique([provider, providerAccountId])
+}
+
+model User {
+    id      String    @id @default(cuid())
+    account Account[]
+    isAdmin Boolean
+}
+
+model Event {
+    id                String              @id @default(cuid())
+    title             String
+    description       String
+    image             String
+    date              DateTime
+    location          String
+    tags              String[]
+    city              City                @relation(fields: [cityId], references: [id])
+    cityId            String
+    school            School              @relation(fields: [schoolId], references: [id])
+    schoolId          String
+    EventRegistration EventRegistration[]
+}
+
+model City {
+    id    String  @id @default(cuid())
+    name  String
+    Event Event[]
+}
+
+model School {
+    id    String  @id @default(cuid())
+    name  String
+    Event Event[]
+}
+
+model EventRegistration {
+    id      String @id @default(cuid())
+    email   String
+    name    String
+    phone   String
+    event   Event  @relation(fields: [eventId], references: [id])
+    eventId String
+}
