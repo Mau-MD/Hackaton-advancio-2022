@@ -10,7 +10,7 @@ const FormView = (props: Partial<DropzoneProps>) => {
         <>
         {/* Nombre de la ventana */}
         <Group position='center'>
-            <h1>Crea un nuevo evento!</h1>
+            <h2>Crea un nuevo evento!</h2>
         </Group>
         {/* Nombre del evento */}
             <TextInput
@@ -41,7 +41,7 @@ const FormView = (props: Partial<DropzoneProps>) => {
                 />
             </Group>
         {/* Subir imagen */}
-
+            <Text weight={600} size="sm" mt={5} mb={1}>Agrega imagenes del evento</Text>
             <Dropzone
             onDrop={(files) => console.log('accepted files', files)}
             onReject={(files) => console.log('rejected files', files)}
