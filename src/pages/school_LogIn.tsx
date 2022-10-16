@@ -8,11 +8,12 @@ import {
   Button,
 } from "@mantine/core";
 import { useForm } from "@mantine/form";
+import { NextPage } from "next";
 import { useRouter } from "next/router";
 import { router } from "../server/trpc/trpc";
 import Dashboard from "./admin/dashboard";
 
-const school_Login = () => {
+const schoolLogin: NextPage = () => {
   const credentials = {
     email: "universidad@cetys.mx",
     contraseña: "12345",
@@ -69,4 +70,4 @@ const school_Login = () => {
   );
 };
 
-export default school_Login;
+export default schoolLogin;
