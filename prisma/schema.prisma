@@ -42,9 +42,9 @@ model Event {
     date              DateTime
     location          String
     tags              String[]
-    city              City                @relation(fields: [cityId], references: [id])
+    city              City                @relation(fields: [cityId], references: [id], onDelete: SetNull)
     cityId            String
-    school            School              @relation(fields: [schoolId], references: [id])
+    school            School              @relation(fields: [schoolId], references: [id], onDelete: SetNull)
     schoolId          String
     EventRegistration EventRegistration[]
 }
@@ -66,6 +66,6 @@ model EventRegistration {
     email   String
     name    String
     phone   String
-    event   Event  @relation(fields: [eventId], references: [id])
+    event   Event  @relation(fields: [eventId], references: [id], onDelete: Cascade)
     eventId String
 }
