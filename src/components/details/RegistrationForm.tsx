@@ -8,6 +8,7 @@ import {
   Card,
   Stack,
   Text,
+  Title,
 } from "@mantine/core";
 import { trpc } from "../../utils/trpc";
 import { showNotification } from "@mantine/notifications";
@@ -70,33 +71,38 @@ const handleEmail = (event: Event, to_email: string) => {
   return (
     <Card sx={{ width: "100%" }} withBorder shadow={"lg"}>
       {!storage.getRegistered(id) ? (
-        <form onSubmit={form.onSubmit(handleFormSubmit)}>
-          <Stack>
-            <TextInput
-              withAsterisk
-              label="Nombre"
-              placeholder="Daniel Barocio"
-              {...form.getInputProps("name")}
-            />
-            <TextInput
-              withAsterisk
-              label="Email"
-              placeholder="your@email.com"
-              {...form.getInputProps("email")}
-            />
-            <TextInput
-              withAsterisk
-              label="Telefono"
-              placeholder="646 199 2149"
-              {...form.getInputProps("phone")}
-            />
-            <Group position="right" mt="md">
-              <Button type="submit" loading={submitRegistration.isLoading}>
-                Registrar
-              </Button>
-            </Group>
-          </Stack>
-        </form>
+        <>
+          <Title order={3} mb={20}>
+            Registrate en el evento
+          </Title>
+          <form onSubmit={form.onSubmit(handleFormSubmit)}>
+            <Stack>
+              <TextInput
+                withAsterisk
+                label="Nombre"
+                placeholder="Daniel Barocio"
+                {...form.getInputProps("name")}
+              />
+              <TextInput
+                withAsterisk
+                label="Email"
+                placeholder="your@email.com"
+                {...form.getInputProps("email")}
+              />
+              <TextInput
+                withAsterisk
+                label="Telefono"
+                placeholder="646 199 2149"
+                {...form.getInputProps("phone")}
+              />
+              <Group position="right" mt="md">
+                <Button type="submit" loading={submitRegistration.isLoading}>
+                  Registrar
+                </Button>
+              </Group>
+            </Stack>
+          </form>
+        </>
       ) : (
         <Text>Ya te registraste para este evento</Text>
       )}

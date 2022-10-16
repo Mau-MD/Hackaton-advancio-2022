@@ -6,6 +6,8 @@ import {
   Stack,
   BackgroundImage,
   Badge,
+  Center,
+  Loader,
 } from "@mantine/core";
 import { format } from "date-fns";
 import { es } from "date-fns/locale";
@@ -24,9 +26,14 @@ const DetailsRoot = ({ id }: Props) => {
     trpc.registration.getAttendeesCount.useQuery(id);
 
   if (!event) {
-    return <div>Loading...</div>;
+    return (
+      <div style={{ height: "90vh" }}>
+        <Center style={{ height: "100%" }}>
+          <Loader />
+        </Center>
+      </div>
+    );
   }
-
   return (
     <Stack>
       <Group>

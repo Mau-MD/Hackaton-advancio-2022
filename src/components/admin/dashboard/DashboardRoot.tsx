@@ -1,25 +1,101 @@
 import {
   Grid,
   Group,
+  Loader,
   MultiSelect,
   SimpleGrid,
   Stack,
   TextInput,
   Title,
 } from "@mantine/core";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { DateRangePicker, DateRangePickerValue } from "@mantine/dates";
-import DashboardCard from "./DashboardCard";
+import { useDebouncedState, useDebouncedValue } from "@mantine/hooks";
+import { useRouter } from "next/router";
+import { trpc } from "../../../utils/trpc";
+import EventSearchCard from "../../search/EventSearchCard";
 
 const DashboardRoot = () => {
+  const router = useRouter();
+  const {
+    query: initialQuery,
+    school: initialSchool,
+    city: initialCity,
+  } = router.query as { query: string; school: string; city: string };
+
+  const [query, setQuery] = useState(initialQuery || "");
+  const [queryCities, setQueryCities] = useState<string[]>(
+    initialSchool ? [initialSchool] : []
+  );
+  const [querySchools, setQuerySchools] = useState<string[]>(
+    initialCity ? [initialCity] : []
+  );
+  const [queryRangeDate, setQueryRangeDate] = useState<Date[]>([]);
+
+  useEffect(() => {
+    if (initialSchool) {
+      setQuerySchools([initialSchool]);
+    }
+    if (initialCity) {
+      setQueryCities([initialCity]);
+    }
+  }, [initialSchool, initialCity]);
+
+  const [debouncedQuery] = useDebouncedValue(query, 300);
+  const [debouncedCities] = useDebouncedValue(queryCities, 300);
+  const [debouncedSchools] = useDebouncedValue(querySchools, 300);
+  const [debouncedRangeDate] = useDebouncedValue(queryRangeDate, 300);
+
+  const { data: events, isLoading } = trpc.events.getEvents.useQuery({
+    query: debouncedQuery,
+    cities: debouncedCities,
+    schools: debouncedSchools,
+    date: debouncedRangeDate,
+  });
+
+  const { data: schools, isLoading: isLoadingSchool } =
+    trpc.school.getSchoolsForSelect.useQuery();
+  const { data: cities, isLoading: isLoadingCity } =
+    trpc.city.getCitiesForSelect.useQuery();
+
   return (
     <Stack>
-      <Title order={5}>Tus eventos: CETYS Universidad</Title>
-      <TextInput label="Nombre del evento" placeholder="Buscar evento" />
+      <Group>
+        <Title order={5}>Busqueda de Eventos</Title>
+        {isLoading && <Loader />}
+      </Group>
+      <TextInput
+        label="Nombre del evento"
+        onChange={(e) => setQuery(e.currentTarget.value)}
+        value={query}
+        placeholder="Busca por nombre del evento"
+      />
       <Group grow>
-        <MultiSelect label="Ciudad" data={[]} />
-        <MultiSelect label="Escuela" data={[]} />
-        <DateRangePicker label="Fechas" />
+        {schools && cities && (
+          <>
+            <MultiSelect
+              label="Escuela"
+              data={schools}
+              value={querySchools}
+              onChange={(schools) => setQuerySchools(schools)}
+              placeholder="Busca por escuela"
+            />
+            <MultiSelect
+              label="Ciudad"
+              data={cities}
+              value={queryCities}
+              onChange={(cities) => setQueryCities(cities)}
+              placeholder="Busca por ciudad"
+            />
+            <DateRangePicker
+              label="Fechas"
+              onChange={(date) =>
+                date[0] && date[1] && setQueryRangeDate([date[0], date[1]])
+              }
+              placeholder="Busca por rango de fechas"
+            />
+          </>
+        )}
       </Group>
       <Title order={5} mt={15}>
         Resultados
@@ -32,24 +108,17 @@ const DashboardRoot = () => {
           { maxWidth: 600, cols: 1, spacing: "sm" },
         ]}
       >
-        <DashboardCard
-          id={""}
-          title={"Hack Ensenada"}
-          badges={["Advancio", "CETYS Universidad"]}
-          description="Unete a este hackaton"
-        />
-        <DashboardCard
-          id={""}
-          title={"Evento deportivo"}
-          badges={["UABC", "Deporte", "Ensenada", "Tijuana"]}
-          description="Participa en este deporte de quemados"
-        />
-        <DashboardCard
-          id={""}
-          title={"Hack Ensenada"}
-          badges={["Advancio"]}
-          description="Unete a este hackaton"
-        />
+        {events?.map((event) => (
+          <EventSearchCard
+            key={event.id}
+            id={event.id}
+            title={event.title}
+            date={event.date}
+            badges={["Advancio", "CETYS Universidad"]}
+            description={event.description}
+            admin
+          />
+        ))}
       </SimpleGrid>
     </Stack>
   );

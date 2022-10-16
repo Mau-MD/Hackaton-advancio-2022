@@ -74,7 +74,7 @@ export const Navbar = ({ links }: HeaderSearchProps) => {
 
   const items = links.map((link) => {
     const menuItems = link.links?.map((item) => (
-      <Menu.Item key={item.link} onClick={() => router.push(item.link)}>
+      <Menu.Item key={item.link} onClick={() => router.replace(item.link)}>
         {item.label}
       </Menu.Item>
     ));
@@ -98,7 +98,7 @@ export const Navbar = ({ links }: HeaderSearchProps) => {
         key={link.label}
         className={classes.link}
         style={{ cursor: "pointer" }}
-        onClick={() => router.push(link?.link || "")}
+        onClick={() => router.push(link?.link || "", {})}
       >
         {link.label}
       </span>

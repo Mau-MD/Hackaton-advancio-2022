@@ -15,6 +15,7 @@ export const eventsRouter = router({
       })
     )
     .query(({ input, ctx }) => {
+      console.log(input);
       if (input.cities?.length === 0) input.cities = undefined;
       if (input.schools?.length === 0) input.schools = undefined;
       if (input.date?.length === 0) input.date = undefined;
@@ -68,6 +69,44 @@ export const eventsRouter = router({
     )
     .mutation(async ({ input, ctx }) => {
       const event = await ctx.prisma.event.create({
+        data: {
+          title: input.title,
+          description: input.description,
+          location: input.location,
+          date: input.date,
+          image: input.image,
+          city: {
+            connect: {
+              id: input.city,
+            },
+          },
+          school: {
+            connect: {
+              id: input.school,
+            },
+          },
+        },
+      });
+      return event;
+    }),
+  updateEvent: publicProcedure
+    .input(
+      z.object({
+        id: z.string(),
+        title: z.string(),
+        description: z.string(),
+        location: z.string(),
+        date: z.date(),
+        image: z.string(),
+        city: z.string(),
+        school: z.string(),
+      })
+    )
+    .mutation(async ({ input, ctx }) => {
+      const event = await ctx.prisma.event.update({
+        where: {
+          id: input.id,
+        },
         data: {
           title: input.title,
           description: input.description,
