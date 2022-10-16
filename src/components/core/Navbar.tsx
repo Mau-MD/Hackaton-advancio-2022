@@ -9,9 +9,10 @@ import {
   Title,
   Affix,
   ColorSchemeProvider,
-  MantineProvider
+  MantineProvider,
+  ColorScheme
 } from "@mantine/core";
-import { useDisclosure } from "@mantine/hooks";
+import { useDisclosure, useHotkeys, useLocalStorage } from "@mantine/hooks";
 import { IconChevronDown } from "@tabler/icons";
 import { useRouter } from "next/router";
 import LightAndDarkModeButton from "./LightDarkButton";
@@ -72,9 +73,21 @@ export interface HeaderSearchProps {
 }
 
 export const Navbar = ({ links }: HeaderSearchProps) => {
+  
   const [opened, { toggle }] = useDisclosure(false);
   const { classes } = useStyles();
   const router = useRouter();
+
+  const [colorScheme, setColorScheme] = useLocalStorage<ColorScheme>({
+    key: 'mantine-color-scheme',
+    defaultValue: 'light',
+    getInitialValueInEffect: true,
+  });
+
+  const toggleColorScheme = (value?: ColorScheme) =>
+    setColorScheme(value || (colorScheme === 'dark' ? 'light' : 'dark'));
+
+  useHotkeys([['mod+J', () => toggleColorScheme()]]);
 
   const items = links.map((link) => {
     const menuItems = link.links?.map((item) => (
@@ -108,14 +121,16 @@ export const Navbar = ({ links }: HeaderSearchProps) => {
       </span>
     );
   });
-
+// MantineProvider
   return (
     <Header height={56} mb={120}>
       <Container>
-      <Affix position={{ top: 20, left: 20 }}>
-        <ColorShemeProvider colorScheme ={colorScheme} toggleColorSheme={toggleColorSheme}>
-          <LightAndDarkModeButton />
-        </ColorShemeProvider>
+      <Affix position={{ top: 15, left: 20 }}>
+        <ColorSchemeProvider colorScheme ={colorScheme} toggleColorScheme={toggleColorScheme}>
+          <MantineProvider theme={{colorScheme}}>
+            <LightAndDarkModeButton />
+          </MantineProvider>
+        </ColorSchemeProvider>
       </Affix>
         <div className={classes.inner}>
           <Title

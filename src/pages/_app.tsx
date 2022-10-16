@@ -34,7 +34,7 @@ const MyApp: AppType<{ session: Session | null }> = ({
   ];
 
   return (
-    <MantineProvider withCSSVariables withNormalizeCSS>
+    <MantineProvider theme={{ colorScheme: 'dark' }} withGlobalStyles withNormalizeCSS>
       <NotificationsProvider>
         <SessionProvider session={session}>
           <AppShell padding={"md"} header={<Navbar links={links} />}>
