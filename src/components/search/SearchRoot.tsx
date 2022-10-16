@@ -40,10 +40,6 @@ const SearchRoot = () => {
     }
   }, [initialSchool, initialCity]);
 
-  useEffect(() => {
-    console.log("INFO", querySchools);
-  }, [querySchools]);
-
   const [debouncedQuery] = useDebouncedValue(query, 300);
 
   const { data: events, isLoading } = trpc.events.getEvents.useQuery({

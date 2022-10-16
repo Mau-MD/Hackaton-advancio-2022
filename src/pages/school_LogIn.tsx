@@ -26,7 +26,7 @@ const school_Login = () => {
       credentials.email == data.email &&
       credentials.contraseña === data.contraseña
     ) {
-      route.push("/admin");
+      route.push("/admin/dashboard");
     }
   };
 

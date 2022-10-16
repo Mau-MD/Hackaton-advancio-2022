@@ -12,7 +12,8 @@ import {
 } from "@mantine/core";
 import { trpc } from "../../utils/trpc";
 import { showNotification } from "@mantine/notifications";
-import Event from '../../server/twilio/eventtype';
+import Event from "../../server/twilio/eventtype";
+import { storage } from "../../utils/storage";
 
 interface FormValues {
   email: string;
@@ -52,8 +53,8 @@ const RegistrationForm = ({ id }: Props) => {
         date_event: values.date,
         city_event: values.city,
         school_event: values.school,
-      }
-      handleEmail(event, 'oscar.encinas@cetys.edu.mx');
+      };
+      handleEmail(event, "oscar.encinas@cetys.edu.mx");
     },
   });
 
@@ -72,9 +73,9 @@ const RegistrationForm = ({ id }: Props) => {
         city_event: event.city_event,
         school_event: event.school_event,
       },
-        to_email: to_email
+      to_email: to_email,
     });
-  }
+  };
 
   return (
     <Card sx={{ width: "100%" }} withBorder shadow={"lg"}>
