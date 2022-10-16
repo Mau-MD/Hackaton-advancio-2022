@@ -48,7 +48,7 @@ const DetailsRoot = ({ id }: Props) => {
           {event.location}
         </Text>
       </Group>
-      <ImageBanner />
+      <ImageBanner src={event.image} />
       <Stack>
         <Text size={"xl"} weight={700} color={"blue"}>
           Descripcion

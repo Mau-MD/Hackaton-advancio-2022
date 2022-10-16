@@ -21,7 +21,9 @@ import {
 import { useForm } from "@mantine/form";
 import { showNotification } from "@mantine/notifications";
 import { IconClock, IconPhoto, IconUpload, IconX } from "@tabler/icons";
+import { getDownloadURL, getStorage, ref, uploadBytes } from "firebase/storage";
 import React, { useEffect, useState } from "react";
+import { app } from "../../../firebase";
 import { trpc } from "../../../utils/trpc";
 
 interface FormTypes {
@@ -120,8 +122,15 @@ const FormView = ({ id }: Props) => {
     },
   });
 
-  const handleFormSubmit = (values: FormTypes) => {
+  const handleFormSubmit = async (values: FormTypes) => {
     if (isEdit) {
+      const storage = getStorage(app);
+      const imageRef = ref(storage, `events/${values.image[0]?.name}`);
+      const arrayBuffer = await values.image[0]?.arrayBuffer();
+      if (!arrayBuffer) return;
+      const imageLink = await uploadBytes(imageRef, arrayBuffer);
+      const downloadLink = await getDownloadURL(imageLink.ref);
+
       updateResource.mutate({
         id: id,
         title: values.name,
@@ -130,10 +139,18 @@ const FormView = ({ id }: Props) => {
         school: values.school,
         date: values.date,
         location: values.place,
-        image: "",
+        image: downloadLink,
       });
       return;
     }
+
+    const storage = getStorage();
+    const imageRef = ref(storage, `events/${values.image[0]?.name}`);
+    const arrayBuffer = await values.image[0]?.arrayBuffer();
+    if (!arrayBuffer) return;
+    const imageLink = await uploadBytes(imageRef, arrayBuffer);
+    const downloadLink = await getDownloadURL(imageLink.ref);
+
     createResource.mutate({
       title: values.name,
       description: values.description,
@@ -141,7 +158,7 @@ const FormView = ({ id }: Props) => {
       school: values.school,
       date: values.date,
       location: values.place,
-      image: "",
+      image: downloadLink,
     });
   };
 
