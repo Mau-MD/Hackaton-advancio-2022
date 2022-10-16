@@ -110,6 +110,7 @@ const SearchRoot = () => {
             id={event.id}
             title={event.title}
             date={event.date}
+            image={event.image}
             badges={["Advancio", "CETYS Universidad"]}
             description={event.description}
           />
