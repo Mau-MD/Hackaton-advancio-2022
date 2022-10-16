@@ -10,13 +10,14 @@ import {
   Affix,
   ColorSchemeProvider,
   MantineProvider,
-  ColorScheme
+  ColorScheme,
 } from "@mantine/core";
 import { useDisclosure, useHotkeys, useLocalStorage } from "@mantine/hooks";
 import { IconChevronDown } from "@tabler/icons";
 import { useRouter } from "next/router";
 import LightAndDarkModeButton from "./LightDarkButton";
 
+import SignIn from "../admin/SignIn/SignIn";
 
 const useStyles = createStyles((theme) => ({
   inner: {
@@ -73,14 +74,13 @@ export interface HeaderSearchProps {
 }
 
 export const Navbar = ({ links }: HeaderSearchProps) => {
-  
   const [opened, { toggle }] = useDisclosure(false);
   const { classes } = useStyles();
   const router = useRouter();
 
   const items = links.map((link) => {
     const menuItems = link.links?.map((item) => (
-      <Menu.Item key={item.link} onClick={() => router.push(item.link)}>
+      <Menu.Item key={item.link} onClick={() => router.replace(item.link)}>
         {item.label}
       </Menu.Item>
     ));
@@ -104,19 +104,19 @@ export const Navbar = ({ links }: HeaderSearchProps) => {
         key={link.label}
         className={classes.link}
         style={{ cursor: "pointer" }}
-        onClick={() => router.push(link?.link || "")}
+        onClick={() => router.push(link?.link || "", {})}
       >
         {link.label}
       </span>
     );
   });
-// MantineProvider
+  // MantineProvider
   return (
     <Header height={56} mb={120}>
       <Container>
-      <Affix position={{ top: 15, left: 20 }}>
-        <LightAndDarkModeButton />
-      </Affix>
+        <Affix position={{ top: 15, left: 20 }}>
+          <LightAndDarkModeButton />
+        </Affix>
         <div className={classes.inner}>
           <Title
             order={4}
@@ -134,6 +134,7 @@ export const Navbar = ({ links }: HeaderSearchProps) => {
             className={classes.burger}
             size="sm"
           />
+          {router.pathname.startsWith("/admin") ? <></> : <SignIn />}
         </div>
       </Container>
     </Header>

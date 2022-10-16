@@ -1,6 +1,7 @@
 import {
   Grid,
   Group,
+  Loader,
   MultiSelect,
   SimpleGrid,
   Stack,
@@ -23,33 +24,29 @@ const SearchRoot = () => {
   } = router.query as { query: string; school: string; city: string };
 
   const [query, setQuery] = useState(initialQuery || "");
-  const [queryCities, setQueryCities] = useState<string[]>(
-    initialSchool ? [initialSchool] : []
-  );
-  const [querySchools, setQuerySchools] = useState<string[]>(
-    initialCity ? [initialCity] : []
-  );
+  const [queryCities, setQueryCities] = useState<string[]>([]);
+  const [querySchools, setQuerySchools] = useState<string[]>([]);
   const [queryRangeDate, setQueryRangeDate] = useState<Date[]>([]);
 
+  const utils = trpc.useContext();
+
   useEffect(() => {
-    if (initialSchool) {
+    console.log(router.query);
+    if (initialSchool && initialSchool.length > 0) {
       setQuerySchools([initialSchool]);
     }
-    if (initialCity) {
+    if (initialCity && initialCity.length > 0) {
       setQueryCities([initialCity]);
     }
   }, [initialSchool, initialCity]);
 
   const [debouncedQuery] = useDebouncedValue(query, 300);
-  const [debouncedCities] = useDebouncedValue(queryCities, 300);
-  const [debouncedSchools] = useDebouncedValue(querySchools, 300);
-  const [debouncedRangeDate] = useDebouncedValue(queryRangeDate, 300);
 
   const { data: events, isLoading } = trpc.events.getEvents.useQuery({
     query: debouncedQuery,
-    cities: debouncedCities,
-    schools: debouncedSchools,
-    date: debouncedRangeDate,
+    cities: queryCities,
+    schools: querySchools,
+    date: queryRangeDate,
   });
 
   const { data: schools, isLoading: isLoadingSchool } =
@@ -59,10 +56,14 @@ const SearchRoot = () => {
 
   return (
     <Stack>
-      <Title order={5}>Busqueda de Eventos</Title>
+      <Group>
+        <Title order={5}>Busqueda de Eventos</Title>
+        {isLoading && <Loader></Loader>}
+      </Group>
       <TextInput
         label="Nombre del evento"
         onChange={(e) => setQuery(e.currentTarget.value)}
+        placeholder="Busca por nombre del evento"
         value={query}
       />
       <Group grow>
@@ -73,18 +74,21 @@ const SearchRoot = () => {
               data={schools}
               value={querySchools}
               onChange={(schools) => setQuerySchools(schools)}
+              placeholder="Busca por escuela"
             />
             <MultiSelect
               label="Ciudad"
               data={cities}
               value={queryCities}
               onChange={(cities) => setQueryCities(cities)}
+              placeholder="Busca por ciudad"
             />
             <DateRangePicker
               label="Fechas"
               onChange={(date) =>
                 date[0] && date[1] && setQueryRangeDate([date[0], date[1]])
               }
+              placeholder="Busca por rango de fechas"
             />
           </>
         )}

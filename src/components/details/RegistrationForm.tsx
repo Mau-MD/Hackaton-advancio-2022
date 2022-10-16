@@ -8,9 +8,11 @@ import {
   Card,
   Stack,
   Text,
+  Title,
 } from "@mantine/core";
 import { trpc } from "../../utils/trpc";
 import { showNotification } from "@mantine/notifications";
+import Event from "../../server/twilio/eventtype";
 import { storage } from "../../utils/storage";
 
 interface FormValues {
@@ -39,13 +41,20 @@ const RegistrationForm = ({ id }: Props) => {
   });
 
   const submitRegistration = trpc.registration.createRegistration.useMutation({
-    onSuccess: () => {
+    onSuccess: (values) => {
       showNotification({
         message: "Registro exitoso",
         title: "Exito",
         color: "green",
       });
-      storage.setRegistered(id);
+      let event: Event = {
+        name_event: values.title,
+        description_event: values.description,
+        date_event: values.date,
+        city_event: values.city,
+        school_event: values.school,
+      };
+      handleEmail(event, "oscar.encinas@cetys.edu.mx");
     },
   });
 
@@ -53,36 +62,56 @@ const RegistrationForm = ({ id }: Props) => {
     submitRegistration.mutate({ ...values, eventId: id });
   };
 
+  const callEmail = trpc.example.sendEmail.useMutation();
+
+  const handleEmail = (event: Event, to_email: string) => {
+    callEmail.mutate({
+      event: {
+        name_event: event.name_event,
+        description_event: event.description_event,
+        date_event: event.date_event,
+        city_event: event.city_event,
+        school_event: event.school_event,
+      },
+      to_email: to_email,
+    });
+  };
+
   return (
     <Card sx={{ width: "100%" }} withBorder shadow={"lg"}>
       {!storage.getRegistered(id) ? (
-        <form onSubmit={form.onSubmit(handleFormSubmit)}>
-          <Stack>
-            <TextInput
-              withAsterisk
-              label="Nombre"
-              placeholder="Daniel Barocio"
-              {...form.getInputProps("name")}
-            />
-            <TextInput
-              withAsterisk
-              label="Email"
-              placeholder="your@email.com"
-              {...form.getInputProps("email")}
-            />
-            <TextInput
-              withAsterisk
-              label="Telefono"
-              placeholder="646 199 2149"
-              {...form.getInputProps("phone")}
-            />
-            <Group position="right" mt="md">
-              <Button type="submit" loading={submitRegistration.isLoading}>
-                Registrar
-              </Button>
-            </Group>
-          </Stack>
-        </form>
+        <>
+          <Title order={3} mb={20}>
+            Registrate en el evento
+          </Title>
+          <form onSubmit={form.onSubmit(handleFormSubmit)}>
+            <Stack>
+              <TextInput
+                withAsterisk
+                label="Nombre"
+                placeholder="Daniel Barocio"
+                {...form.getInputProps("name")}
+              />
+              <TextInput
+                withAsterisk
+                label="Email"
+                placeholder="your@email.com"
+                {...form.getInputProps("email")}
+              />
+              <TextInput
+                withAsterisk
+                label="Telefono"
+                placeholder="646 199 2149"
+                {...form.getInputProps("phone")}
+              />
+              <Group position="right" mt="md">
+                <Button type="submit" loading={submitRegistration.isLoading}>
+                  Registrar
+                </Button>
+              </Group>
+            </Stack>
+          </form>
+        </>
       ) : (
         <Text>Ya te registraste para este evento</Text>
       )}

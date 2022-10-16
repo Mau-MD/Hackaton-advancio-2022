@@ -13,6 +13,7 @@ interface Props {
   description: string;
   image?: string;
   date: Date;
+  admin?: boolean;
 }
 
 const defaultImage =
@@ -25,6 +26,7 @@ const EventSearchCard = ({
   description,
   date,
   image = defaultImage,
+  admin = false,
 }: Props) => {
   const router = useRouter();
 
@@ -74,9 +76,11 @@ const EventSearchCard = ({
             fullWidth
             mt="md"
             radius="md"
-            onClick={() => router.push(`/event/${id}`)}
+            onClick={() =>
+              router.push(admin ? `/admin/form?id=${id}` : `/event/${id}`)
+            }
           >
-            Registarse
+            {admin ? "Editar" : "Registrarse"}
           </Button>
         </div>
       </Stack>

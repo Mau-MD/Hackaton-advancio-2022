@@ -1,13 +1,11 @@
-import React, { useState } from 'react';
-import FormView from '../../../pages/admin/form';
+import React, { useState } from "react";
+import FormView from "./FormView";
 
-const FormRoot = () => {
-    const [opened, setOpened] = useState(false);
-    return (
-        <>
-            <FormView />
-        </>
-    )
+interface Props {
+  id?: string;
+}
+const FormRoot = ({ id }: Props) => {
+  return <FormView id={id} />;
 };
 
 export default FormRoot;

@@ -3,6 +3,7 @@ import {
   Card,
   Grid,
   Group,
+  Loader,
   SimpleGrid,
   Space,
   Stack,
@@ -39,7 +40,10 @@ const MainRoot = () => {
 
   return (
     <>
-      <h1>Próximo evento</h1>
+      <Group>
+        <h1>Próximo evento</h1>
+        {isLoading && <Loader />}
+      </Group>
       {firstEvent && (
         <MainEvent
           id={firstEvent.id}
