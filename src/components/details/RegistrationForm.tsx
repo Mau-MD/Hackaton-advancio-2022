@@ -40,7 +40,6 @@ const RegistrationForm = ({ id }: Props) => {
 
   const submitRegistration = trpc.registration.createRegistration.useMutation({
     onSuccess: (values) => {
-      console.log(values)
       showNotification({
         message: "Registro exitoso",
         title: "Exito",
@@ -53,7 +52,7 @@ const RegistrationForm = ({ id }: Props) => {
         city_event: values.city,
         school_event: values.school,
       }
-      // handleEmail(event, );
+      handleEmail(event, 'oscar.encinas@cetys.edu.mx');
     },
   });
 
