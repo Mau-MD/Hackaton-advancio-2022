@@ -11,6 +11,7 @@ import {
 import { useDisclosure } from "@mantine/hooks";
 import { IconChevronDown } from "@tabler/icons";
 import { useRouter } from "next/router";
+import SignIn from "../admin/SignIn/SignIn";
 
 const useStyles = createStyles((theme) => ({
   inner: {
@@ -124,6 +125,7 @@ export const Navbar = ({ links }: HeaderSearchProps) => {
             className={classes.burger}
             size="sm"
           />
+          {router.pathname.startsWith("/admin") ? <></> : <SignIn />}
         </div>
       </Container>
     </Header>
