@@ -19,8 +19,9 @@ export const exampleRouter = router({
     event: z.object({
       name_event: z.string(),
       description_event: z.string(),
-      date_event: z.string(),
-      time_event: z.string(),
+      date_event: z.date(),
+      city_event: z.string(),
+      school_event: z.string()
     }),
     cellphone_number: z.string()
   }))
@@ -31,8 +32,9 @@ export const exampleRouter = router({
     event: z.object({
       name_event: z.string(),
       description_event: z.string(),
-      date_event: z.string(),
-      time_event: z.string(),
+      date_event: z.date(),
+      city_event: z.string(),
+      school_event: z.string()
     }),
     cellphone_number: z.string()
   }))
@@ -43,8 +45,9 @@ export const exampleRouter = router({
     event: z.object({
       name_event: z.string(),
       description_event: z.string(),
-      date_event: z.string(),
-      time_event: z.string(),
+      date_event: z.date(),
+      city_event: z.string(),
+      school_event: z.string()
     }),
     to_email: z.string()
   }))
