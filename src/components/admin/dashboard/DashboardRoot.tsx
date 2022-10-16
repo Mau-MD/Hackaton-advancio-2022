@@ -116,6 +116,7 @@ const DashboardRoot = () => {
             date={event.date}
             badges={["Advancio", "CETYS Universidad"]}
             description={event.description}
+            image={event.image}
             admin
           />
         ))}
