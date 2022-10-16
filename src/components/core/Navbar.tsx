@@ -78,17 +78,6 @@ export const Navbar = ({ links }: HeaderSearchProps) => {
   const { classes } = useStyles();
   const router = useRouter();
 
-  const [colorScheme, setColorScheme] = useLocalStorage<ColorScheme>({
-    key: 'mantine-color-scheme',
-    defaultValue: 'light',
-    getInitialValueInEffect: true,
-  });
-
-  const toggleColorScheme = (value?: ColorScheme) =>
-    setColorScheme(value || (colorScheme === 'dark' ? 'light' : 'dark'));
-
-  useHotkeys([['mod+J', () => toggleColorScheme()]]);
-
   const items = links.map((link) => {
     const menuItems = link.links?.map((item) => (
       <Menu.Item key={item.link} onClick={() => router.push(item.link)}>
@@ -126,11 +115,7 @@ export const Navbar = ({ links }: HeaderSearchProps) => {
     <Header height={56} mb={120}>
       <Container>
       <Affix position={{ top: 15, left: 20 }}>
-        <ColorSchemeProvider colorScheme ={colorScheme} toggleColorScheme={toggleColorScheme}>
-          <MantineProvider theme={{colorScheme}}>
-            <LightAndDarkModeButton />
-          </MantineProvider>
-        </ColorSchemeProvider>
+        <LightAndDarkModeButton />
       </Affix>
         <div className={classes.inner}>
           <Title
