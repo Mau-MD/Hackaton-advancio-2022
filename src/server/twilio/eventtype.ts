@@ -1,4 +1,4 @@
-interface Event {
+interface Eventt {
     name_event: string,
     description_event: string,
     date_event: Date,

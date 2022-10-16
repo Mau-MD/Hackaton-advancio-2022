@@ -12,8 +12,8 @@ import {
 } from "@mantine/core";
 import { trpc } from "../../utils/trpc";
 import { showNotification } from "@mantine/notifications";
-import Event from "../../server/twilio/eventtype";
 import { storage } from "../../utils/storage";
+import { Event } from "@prisma/client";
 
 interface FormValues {
   email: string;
@@ -23,9 +23,10 @@ interface FormValues {
 
 interface Props {
   id: string;
+  event: Event
 }
 
-const RegistrationForm = ({ id }: Props) => {
+const RegistrationForm = ({ id, event}: Props) => {
   const form = useForm<FormValues>({
     initialValues: {
       email: "",
@@ -46,15 +47,8 @@ const RegistrationForm = ({ id }: Props) => {
         message: "Registro exitoso",
         title: "Exito",
         color: "green",
-      });
-      let event: Event = {
-        name_event: values.title,
-        description_event: values.description,
-        date_event: values.date,
-        city_event: values.city,
-        school_event: values.school,
-      };
-      handleEmail(event, "oscar.encinas@cetys.edu.mx");
+      });      
+      handleSMS(event.title, event.description, event.date, 'Ensenada', event.location, values.phone)
     },
   });
 
@@ -62,20 +56,31 @@ const RegistrationForm = ({ id }: Props) => {
     submitRegistration.mutate({ ...values, eventId: id });
   };
 
-  const callEmail = trpc.example.sendEmail.useMutation();
+  // const callEmail = trpc.example.sendEmail.useMutation();
 
-  const handleEmail = (event: Event, to_email: string) => {
-    callEmail.mutate({
-      event: {
-        name_event: event.name_event,
-        description_event: event.description_event,
-        date_event: event.date_event,
-        city_event: event.city_event,
-        school_event: event.school_event,
-      },
-      to_email: to_email,
+  // const handleEmail = (name_event: string, description_event: string, date_event: string, city_event: string, school_event: string, to_email: string) => {
+  //   callEmail.mutate({
+  //     name_event: name_event,
+  //     description_event: description_event,
+  //     date_event: date_event,
+  //     city_event: city_event,
+  //     school_event: school_event,
+  //     to_email: to_email,
+  //   });
+  // };
+
+  const callSMS = trpc.example.sendSMS.useMutation();
+
+  const handleSMS = (name_event: string, description_event: string, date_event: Date, city_event: string, school_event: string, cellphone_number: string) => {
+    callSMS.mutate({
+      name_event: name_event,
+      description_event: description_event,
+      date_event: date_event,
+      city_event: city_event,
+      school_event: school_event,
+      cellphone_number: cellphone_number
     });
-  };
+  }
 
   return (
     <Card sx={{ width: "100%" }} withBorder shadow={"lg"}>
