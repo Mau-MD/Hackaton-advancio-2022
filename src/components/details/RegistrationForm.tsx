@@ -47,34 +47,11 @@ const RegistrationForm = ({ id }: Props) => {
         title: "Exito",
         color: "green",
       });
-      let event: Event = {
-        name_event: values.title,
-        description_event: values.description,
-        date_event: values.date,
-        city_event: values.city,
-        school_event: values.school,
-      };
-      handleEmail(event, "oscar.encinas@cetys.edu.mx");
     },
   });
 
   const handleFormSubmit = (values: FormValues) => {
     submitRegistration.mutate({ ...values, eventId: id });
-  };
-
-  const callEmail = trpc.example.sendEmail.useMutation();
-
-  const handleEmail = (event: Event, to_email: string) => {
-    callEmail.mutate({
-      event: {
-        name_event: event.name_event,
-        description_event: event.description_event,
-        date_event: event.date_event,
-        city_event: event.city_event,
-        school_event: event.school_event,
-      },
-      to_email: to_email,
-    });
   };
 
   return (
