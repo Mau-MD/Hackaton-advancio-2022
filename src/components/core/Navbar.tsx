@@ -7,10 +7,16 @@ import {
   Burger,
   Container,
   Title,
+  Affix,
+  ColorSchemeProvider,
+  MantineProvider,
+  ColorScheme,
 } from "@mantine/core";
-import { useDisclosure } from "@mantine/hooks";
+import { useDisclosure, useHotkeys, useLocalStorage } from "@mantine/hooks";
 import { IconChevronDown } from "@tabler/icons";
 import { useRouter } from "next/router";
+import LightAndDarkModeButton from "./LightDarkButton";
+
 import SignIn from "../admin/SignIn/SignIn";
 
 const useStyles = createStyles((theme) => ({
@@ -104,10 +110,13 @@ export const Navbar = ({ links }: HeaderSearchProps) => {
       </span>
     );
   });
-
+  // MantineProvider
   return (
     <Header height={56} mb={120}>
       <Container>
+        <Affix position={{ top: 15, left: 20 }}>
+          <LightAndDarkModeButton />
+        </Affix>
         <div className={classes.inner}>
           <Title
             order={4}

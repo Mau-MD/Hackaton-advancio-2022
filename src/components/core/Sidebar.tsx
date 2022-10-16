@@ -5,7 +5,7 @@ import { useRouter } from "next/router";
 import { useState } from "react";
 
 const Sidebar = () => {
-  const [active, setActive] = useState(0);
+  const [active, setActive] = useState(1);
   const route = useRouter();
 
   const handleSelect = (section: number) => {
